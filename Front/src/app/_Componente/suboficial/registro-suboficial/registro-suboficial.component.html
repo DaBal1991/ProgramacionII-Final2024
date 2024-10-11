@@ -1,0 +1,87 @@
+<div class="container">
+
+  <div
+    class="card-header text-center bg-success border border-black text-white rounded mt-4 mb-4"
+    style="font-weight: bold;"><h3>Registrar Suboficial</h3>
+  </div>
+
+  <div class="card bg-success border border-black text-white text-center">
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" #formulario="ngForm">
+
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre completo</label>
+          <input type="text" class="form-control" id="nombre" name="nombre"
+                 [(ngModel)]="suboficial.nombrePila" #nombre="ngModel" required pattern="[a-zA-ZÑñÁáÉéÍíÓóÚúÜü ]+">
+
+          <div *ngIf="nombre.invalid && nombre.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="nombre.errors?.['required']">Es necesario un nombre...</div>
+            <div *ngIf="nombre.errors?.['pattern']">El nombre solo puede contener caracteres alfabeticos...</div>
+          </div>
+
+        </div>
+
+        <!-- Apellido -->
+        <div class="mb-3">
+          <label for="apellido" class="form-label">Apellido</label>
+          <input type="text" class="form-control" id="apellido" name="apellido"
+                 [(ngModel)]="suboficial.apellido" #apellido="ngModel" required pattern="[a-zA-ZÑñÁáÉéÍíÓóÚúÜü ]+">
+
+          <div *ngIf="apellido.invalid && apellido.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="apellido.errors?.['required']">Es necesario un apellido...</div>
+            <div *ngIf="apellido.errors?.['pattern']">El apellido solo puede contener caracteres alfabeticos...</div>
+          </div>
+
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="password" name="password" required minlength="6"
+                 #password="ngModel"
+                 [(ngModel)]="suboficial.password">
+
+          <div *ngIf="password.invalid && password.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="password.errors?.['required']">Se requiere una contraseña...</div>
+            <div *ngIf="password.errors?.['minlength']">La contraseña debe contener un mínimo de seis caracteres...
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Graduacion -->
+        <div class="mb-3">
+          <label for="graduacion" class="form-label">Graduación</label>
+          <select class="form-control" id="graduacion" name="graduacion" [(ngModel)]="suboficial.graduacion"
+                  required="true" #graduacion="ngModel">
+            <option value="" disabled>Elegir graduación</option>
+            <option value="Suboficial Mayor">Suboficial Mayor</option>
+            <option value="Suboficial Principal">Suboficial Principal</option>
+            <option value="Sargento Ayudante">Sargento Ayudante</option>
+            <option value="Sargento Primero">Sargento Primero</option>
+            <option value="Sargento">Sargento</option>
+            <option value="Cabo Primero">Cabo Primero</option>
+            <option value="Cabo">Cabo</option>
+          </select>
+
+          <div *ngIf="graduacion.invalid && graduacion.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="graduacion.errors?.['required']">Se debe seleccionar una graduación...</div>
+          </div>
+
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-success btn-lg me-3 border border-black rounded"
+                  [disabled]="formulario.invalid">Registrar
+          </button>
+          <a href="/listarSuboficiales" class="btn btn-danger btn-lg border border-black rounded">Volver</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

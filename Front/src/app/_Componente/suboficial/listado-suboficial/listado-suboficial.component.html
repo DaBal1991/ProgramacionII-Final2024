@@ -1,0 +1,93 @@
+<div class="container">
+
+  <div
+    class="card-header text-center bg-success border border-black text-white rounded mt-4 mb-4"
+    style="font-weight: bold;"><h3>Suboficiales</h3>
+  </div>
+
+  <div class="d-flex justify-content-end mb-5">
+    <input class="form-control mr-sm-2" type="search"
+           placeholder="Filtrar listado (Criterios: Código, apellido, graduación o usuario)..."
+           [(ngModel)]="criterioBusqueda" name="codigoBusqueda" (keyup)="buscarSuboficial()">
+
+    <button *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" type="button"
+            class="btn btn-success btn-lg border border-black rounded mx-2" routerLink="/registrarSuboficial">Registrar
+      Nuevo Suboficial
+    </button>
+
+    <button type="button"
+            class="btn btn-danger btn-lg border border-black rounded" routerLink="/menuPrincipal">Volver
+    </button>
+  </div>
+
+  <table class="table table-striped table-hover align-middle text-center">
+    <thead class="table-success">
+    <tr>
+      <th scope="col">Código</th>
+      <th scope="col">Apellido
+        <!-- <button class="btn btn-transparent" (click)="ordernarPorApellido()"><i class="bi bi-arrow-down-up"></i></button> -->
+      </th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Graduación</th>
+      <th scope="col">Estado</th>
+      <th *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" scope="col">Usuario
+        <!-- <button class="btn btn-transparent" (click)="ordernarPorNomUsuario()"><i class="bi bi-arrow-down-up"></i></button> -->
+      </th>
+      <th *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" scope="col">Contraseña</th>
+      <th *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" scope="col">Ver
+        Contraseña
+      </th>
+      <th *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" scope="col">Modificar</th>
+      <th *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" scope="col">Baja Permanente</th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let suboficial of suboficialesBuscados">
+      <th scope="row">{{ suboficial.id }}</th>
+      <td>{{ suboficial.apellido }}</td>
+      <td>{{ suboficial.nombrePila }}</td>
+      <td>
+        <img [src]="getImagenGraduacion(suboficial.graduacion)" [alt]="suboficial.graduacion"
+             [title]="suboficial.graduacion">
+      </td>
+      <td>
+        <span *ngIf="suboficial.estado">En Servicio</span>
+        <span *ngIf="!suboficial.estado">Retirado</span>
+      </td>
+      <td *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')">{{ suboficial.nombreUsuario }}</td>
+      <td *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')">
+        <span *ngIf="suboficial.isPasswordVisible; else passwordOculta">{{ suboficial.password }}</span>
+
+        <ng-template #passwordOculta>
+          <span>******</span>
+        </ng-template>
+      </td>
+
+      <td *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')">
+        <button (click)="visibilidadPassword(suboficial)"
+                class="btn btn-transparent btn-lg border border-black rounded">
+          <i class="bi"
+             [ngClass]="{'bi-eye': !suboficial.isPasswordVisible, 'bi-eye-slash': suboficial.isPasswordVisible}"></i>
+        </button>
+      </td>
+
+      <td *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')">
+        <div>
+          <button (click)="editarSubficial(suboficial.id)"
+                  class="btn btn-transparent btn-lg border border-black rounded"><i class="bi bi-pencil-fill"
+                                                                                    style="color: blue"></i></button>
+        </div>
+      </td>
+
+      <td *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')">
+        <div>
+          <button (click)="bajaSuboficial(suboficial.id)"
+                  class="btn btn-transparent btn-lg border border-black rounded"><i class="bi bi-trash3-fill"
+                                                                                    style="color:red"></i></button>
+        </div>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>

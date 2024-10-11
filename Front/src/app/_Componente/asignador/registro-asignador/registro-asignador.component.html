@@ -1,0 +1,53 @@
+<div class="container">
+
+  <div
+    class="card-header text-center bg-success border border-black text-white rounded mt-4 mb-4"
+    style="font-weight: bold;"><h3>Registrar Asignación</h3>
+  </div>
+
+  <div class="card bg-success border border-black text-white text-center">
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" #formulario="ngForm">
+
+        <!-- Soldado -->
+        <div class="mb-3">
+          <label for="soldado" class="form-label">Soldado</label>
+          <select class="form-control" id="soldado" name="soldado" [(ngModel)]="asignador.soldado.id" #soldado="ngModel" required="true">
+            <option value="" selected disabled>Seleccione un soldado...</option>
+            <option *ngFor="let soldado of soldadosActivos" [ngValue]="soldado.id"> ({{ soldado.id }})
+              - {{ soldado.apellido }}, {{ soldado.nombrePila }}
+            </option>
+          </select>
+
+          <div *ngIf="soldado.invalid && soldado.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="soldado.errors?.['required']">Se debe seleccionar un soldado...</div>
+          </div>
+
+        </div>
+
+        <!-- Servicio -->
+        <div class="mb-3">
+          <label for="servicio" class="form-label">Servicio</label>
+          <select class="form-control" id="servicio" name="servicio" [(ngModel)]="asignador.servicio.id" #servicio="ngModel" required="true">
+            <option value="" selected disabled>Seleccione un servicio...</option>
+            <option *ngFor="let servicio of serviciosActivos" [ngValue]="servicio.id">({{ servicio.id }})
+              - {{ servicio.descripcion }}
+            </option>
+          </select>
+
+          <div *ngIf="servicio.invalid && servicio.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="servicio.errors?.['required']">Se debe seleccionar un servicio...</div>
+          </div>
+
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-success btn-lg me-3 border border-black rounded" [disabled]="formulario.invalid">Registrar</button>
+          <a href="/listarAsignaciones" class="btn btn-danger btn-lg border border-black rounded">Volver</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,267 @@
+<div class="container mt-4">
+
+  <div class="card text-center bg-transparent border border-black">
+    <div class="card-body bg-success border border-0 rounded">
+
+      <!-- Cartel de ADMIN -->
+      <div *ngIf="isPermitido('ADMIN')">
+        <h4 class="card-title text-white">Navegando como {{ rolUsuario }}</h4>
+        <img src="/assets/imgs/TENIENTEGENERAL.jpeg"
+             class="rounded-circle img-thumbnail mt-2 border border-black rounded" style="width: 150px;"
+             alt="icono_Oficial">
+      </div>
+
+      <!-- Cartel de OFICIAL -->
+      <div *ngIf="isPermitido('OFICIAL')">
+        <h4 class="card-title text-white">Navegando como {{ rolUsuario }}</h4>
+        <img src="/assets/imgs/OFICIAL.jpeg"
+             class="rounded-circle img-thumbnail mt-2 border border-black rounded" style="width: 150px;"
+             alt="icono_Oficial">
+      </div>
+
+      <!-- Cartel de SUBOFICIAL -->
+      <div *ngIf="isPermitido('SUBOFICIAL')">
+        <h5 class="card-title text-white">Navegando como {{ rolUsuario }}</h5>
+        <img src="/assets/imgs/SUBOFICIAL.jpeg"
+             class="rounded-circle img-thumbnail mt-2 border border-black rounded" style="width: 150px;"
+             alt="icono_Suboficial">
+      </div>
+
+      <!-- Cartel de SOLDADO -->
+      <div *ngIf="isPermitido('SOLDADO')">
+        <h5 class="card-title text-white">Navegando como {{ rolUsuario }}</h5>
+        <img src="/assets/imgs/SOLDADO.jpeg"
+             class="rounded-circle img-thumbnail mt-2 border border-black rounded" style="width: 150px;"
+             alt="icono_Soldado">
+      </div>
+
+      <!-- Saludo al Usuario -->
+      <h5 class="card-text mt-2 text-white">Bienvenido <b style="text-transform: uppercase">{{ apellido }}
+        , {{ nombrePila }} - ({{ nombreUsuario }})</b></h5>
+
+    </div>
+  </div>
+
+  <!-- Primer fila: Oficiales/Suboficiales/Soldados -->
+  <div class="card mt-3 col-md-12 mx-auto mb-4 bg-transparent border border-0">
+    <div class="card-body">
+      <div class="row justify-content-center d-flex">
+
+        <!-- Oficiales -->
+        <ng-container *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')">
+          <div class="col-md-4 text-center">
+            <div class="card bg-transparent border border-0 rounded">
+              <div
+                class="card-header text-center bg-success border border-black text-white rounded"
+                style="font-weight: bold;">Oficiales
+              </div>
+              <div class="card-body">
+                <img src="/assets/imgs/menuOficial.jpeg"
+                     class="rounded-circle img-thumbnail border border-black rounded" style="width: 150px;"
+                     alt="Usuarios">
+                <p class="card-text mt-2"></p>
+                <!-- Boton Oficial -->
+                <button *ngIf="isPermitido('ADMIN')" type="button"
+                        class="btn btn-success btn-lg border border-black rounded"
+                        routerLink="/listarOficiales">Gestionar
+                </button>
+                <button *ngIf="isPermitido('OFICIAL')" type="button"
+                        class="btn btn-success btn-lg border border-black rounded"
+                        routerLink="/listarOficiales">Consultar
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Suboficiales -->
+        <ng-container *ngIf="isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN')">
+          <div class="col-md-4">
+            <div class="card bg-transparent border border-0 rounded text-center">
+              <div
+                class="card-header text-center bg-success border border-black text-white rounded"
+                style="font-weight: bold;">Suboficiales
+              </div>
+              <div class="card-body">
+                <img src="/assets/imgs/menuSuboficiales.jpeg"
+                     class="rounded-circle img-thumbnail border border-black rounded" style="width: 150px;"
+                     alt="Usuarios">
+                <p class="card-text mt-2"></p>
+                <!-- Boton Oficial -->
+                <button *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" type="button"
+                        class="btn btn-success btn-lg border border-black rounded"
+                        routerLink="/listarSuboficiales">Gestionar
+                </button>
+                <button *ngIf="isPermitido('SUBOFICIAL')" type="button"
+                        class="btn btn-success btn-lg border border-black rounded"
+                        routerLink="/listarSuboficiales">Consultar
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Soldados -->
+        <div class="col-md-4" *ngIf="isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN')">
+          <div class="card text-center bg-transparent border border-0">
+            <div class="card-header text-center bg-success text-white border border-black rounded"
+                 style="font-weight: bold;">Soldados
+            </div>
+            <div class="card-body">
+              <img src="/assets/imgs/menuSoldado.jpeg"
+                   class="rounded-circle img-thumbnail border border-black rounded" style="width: 150px;"
+                   alt="Soldados">
+              <p class="card-text mt-2"></p>
+              <!-- Boton Oficial y Suboficial -->
+              <button *ngIf="isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN')" type="button"
+                      class="btn btn-success btn-lg border border-black rounded" routerLink="/listarSoldados">Gestionar
+              </button>
+              <!-- Boton Soldado -->
+              <button *ngIf="isPermitido('SOLDADO')" type="button"
+                      class="btn btn-success btn-lg border border-black rounded"
+                      routerLink="/listarSoldados">Consultar
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Segunda fila: Cuarteles/Cuerpos/Compañias -->
+  <div class="card mt-3 col-md-12 mx-auto mb-4 bg-transparent border border-0">
+    <div class="card-body">
+      <div class="row justify-content-center">
+
+        <!-- Cuarteles -->
+        <div class="col-md-4">
+          <div class="card text-center bg-transparent border border-0">
+            <div class="card-header text-center border border-black rounded text-white bg-success"
+                 style="font-weight: bold;">Cuarteles
+            </div>
+            <div class="card-body">
+              <img src="/assets/imgs/menuCuartel.jpeg" class="rounded-circle img-thumbnail border border-black"
+                   style="width: 150px;" alt="Cuarteles">
+              <p class="card-text mt-2"></p>
+              <!-- Boton de oficial -->
+              <button *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" type="button"
+                      class="btn btn-success btn-lg border border-black rounded"
+                      routerLink="/listarCuarteles">Gestionar
+              </button>
+              <!-- Boton de suboficial y soldado -->
+              <button *ngIf="isPermitido('SUBOFICIAL') || isPermitido('SOLDADO')" type="button"
+                      class="btn btn-success btn-lg border border-black rounded" routerLink="/listarCuarteles">Consultar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cuerpos -->
+        <div class="col-md-4 text-center">
+          <div class="card border border-0 bg-transparent">
+            <div class="card-header text-center bg-success text-white border border-black rounded"
+                 style="font-weight: bold;">Cuerpos
+            </div>
+            <div class="card-body">
+              <img src="/assets/imgs/menuCuerpos.jpeg" class="rounded-circle img-thumbnail border border-black"
+                   style="width: 150px;" alt="Cuerpos">
+              <p class="card-text mt-2"></p>
+              <!-- Boton de oficial -->
+              <button *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" type="button"
+                      class="btn btn-success btn-lg border border-black rounded"
+                      routerLink="/listarCuerpos">Gestionar
+              </button>
+              <!-- Boton de suboficial y soldado -->
+              <button *ngIf="isPermitido('SUBOFICIAL') || isPermitido('SOLDADO')" type="button"
+                      class="btn btn-success btn-lg border border-black" routerLink="/listarCuerpos">Consultar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compañias -->
+        <div class="col-md-4 text-center">
+          <div class="card border border-0 bg-transparent">
+            <div class="card-header text-center border border-black text-white bg-success rounded"
+                 style="font-weight: bold;">Compañias
+            </div>
+            <div class="card-body">
+              <img src="/assets/imgs/menuCompania.jpeg"
+                   class="rounded-circle img-thumbnail border border-black rounded" style="width: 150px;"
+                   alt="Companias">
+              <p class="card-text mt-2"></p>
+              <!-- Boton de oficial -->
+              <button *ngIf="isPermitido('OFICIAL') || isPermitido('ADMIN')" type="button"
+                      class="btn btn-success btn-lg border border-black rounded"
+                      routerLink="/listarCompanias">Gestionar
+              </button>
+              <!-- Boton de suboficial y soldado -->
+              <button *ngIf="isPermitido('SUBOFICIAL') || isPermitido('SOLDADO')" type="button"
+                      class="btn btn-success btn-lg border border-black rounded" routerLink="/listarCompanias">Consultar
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Tercer fila: Servicios/Asignaciones -->
+  <div class="card mt-3 col-md-12 mx-auto mb-4 bg-transparent border border-0">
+    <div class="card-body">
+      <div class="row justify-content-center">
+
+        <!-- Servicios -->
+        <ng-container *ngIf="isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN')">
+          <div class="col-md-4">
+            <div
+              class="card text-center bg-transparent border border-0 rounded">
+              <div class="card-header text-center bg-success border border-black rounded text-white"
+                   style="font-weight: bold;">Servicios
+              </div>
+              <div class="card-body">
+                <img src="/assets/imgs/menuServicio.jpeg"
+                     class="rounded-circle img-thumbnail border border-black rounded" style="width: 150px;"
+                     alt="Servicios">
+                <p class="card-text mt-2"></p>
+                <button type="button" class="btn btn-success btn-lg border border-black rounded"
+                        routerLink="/listarServicios">Gestionar
+                </button>
+                <!-- <button *ngIf="matchRol('SOLDADO')" type="button" class="btn btn-success">Consultar</button> -->
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Asignador -->
+        <div class="col-md-4">
+          <div class="card text-center bg-transparent border-0">
+            <div class="card-header text-center bg-success border border-black rounded text-white"
+                 style="font-weight: bold;">Asignación de Servicios
+            </div>
+            <div class="card-body">
+              <img src="/assets/imgs/menuAsignador.jpeg"
+                   class="rounded-circle img-thumbnail border border-black rounded" style="width: 150px;"
+                   alt="Asignador">
+              <p class="card-text mt-2"></p>
+              <!-- Boton de Oficial y Suboficial -->
+              <button *ngIf="isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN')" type="button"
+                      class="btn btn-success btn-lg border border-black rounded" routerLink="/listarAsignaciones">
+                Gestionar
+              </button>
+              <!-- Boton de Soldado -->
+              <button *ngIf="isPermitido('SOLDADO')" type="button"
+                      class="btn btn-success btn-lg border border-black rounded"
+                      routerLink="/listarAsignaciones">Consultar
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

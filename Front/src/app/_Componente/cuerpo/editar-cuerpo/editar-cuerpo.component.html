@@ -1,0 +1,49 @@
+<div class="container">
+
+  <div
+    class="card-header text-center bg-success border border-black text-white rounded mt-4 mb-4"
+    style="font-weight: bold;"><h3>Modificar Cuerpo</h3>
+  </div>
+
+  <div class="card bg-success border border-black text-white text-center">
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" #formulario="ngForm">
+
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" #nombre="ngModel" required
+                 pattern="[a-zA-ZÑñÁáÉéÍíÓóÚúÜü ]+"
+                 [(ngModel)]="cuerpo.nombreCuerpo">
+
+          <div *ngIf="nombre.invalid && nombre.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="nombre.errors?.['required']">Es necesaria un nombre...</div>
+            <div *ngIf="nombre.errors?.['pattern']">El nombre solo puede contener caracteres alfabeticos...
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Estado -->
+        <div class="mb-3 text-center">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="enServicio" [value]="true"
+                   [(ngModel)]="cuerpo.estado">
+            <label class="form-check-label" for="enServicio">En servicio</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="inactivo" [value]="false"
+                   [(ngModel)]="cuerpo.estado">
+            <label class="form-check-label" for="inactivo">Inactivo</label>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-success btn-lg me-3 border border-black rounded" [disabled]="formulario.invalid">Modificar</button>
+          <a href="/listarCuerpos" class="btn btn-danger btn-lg border border-black rounded">Volver</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

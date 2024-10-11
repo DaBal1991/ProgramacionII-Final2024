@@ -1,0 +1,77 @@
+<div class="container">
+
+  <div
+    class="card-header text-center bg-success border border-black text-white rounded mt-4 mb-4"
+    style="font-weight: bold;"><h3>Asignaciones</h3>
+  </div>
+
+  <div class="d-flex justify-content-end mb-5">
+
+    <input class="form-control mr-sm-2" type="search"
+           placeholder="Filtrar listado (Criterios: Código, soldado o servicio)..."
+           [(ngModel)]="criterioBusqueda" name="criterioBusqueda" (keyup)="buscarAsignacion()">
+
+    <button *ngIf="isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN')" type="button"
+            class="btn btn-success btn-lg border border-black rounded mx-2"
+            routerLink="/registrarAsignacion">Registrar Nueva Asignación
+    </button>
+
+    <button type="button"
+            class="btn btn-danger btn-lg border border-black rounded" routerLink="/menuPrincipal">Volver
+    </button>
+  </div>
+
+  <table class="table table-striped table-hover align-middle text-center">
+    <thead class="table-success">
+    <tr>
+      <th scope="col">Código</th>
+      <th scope="col">Soldado</th>
+      <th scope="col">Servicio</th>
+      <th scope="col">Fecha de Inicio</th>
+      <th scope="col">Fecha de Finalización</th>
+      <th *ngIf="isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN')" scope="col">Finalizar
+        Asignación
+      </th>
+      <th *ngIf="isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN')" scope="col">Baja
+        Permanente
+      </th>
+      <th *ngIf="isPermitido('SOLDADO')"></th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let asignacion of asignacionesBuscadas">
+      <th scope="row">{{ asignacion.id }}</th>
+      <td>({{ asignacion.soldado.id }}) - {{ asignacion.soldado.apellido }}, {{ asignacion.soldado.nombrePila }}</td>
+      <td>({{ asignacion.servicio.id }}) - {{ asignacion.servicio.descripcion }}</td>
+      <td>{{ asignacion.fechaInicio }}</td>
+      <td>{{ asignacion.fechaFin }}</td>
+
+      <td>
+        <ng-container>
+          <div
+            *ngIf="asignacion.fechaFin === 'En Servicio' && (isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN'))">
+            <button (click)="finAsignacion(asignacion.id)"
+                    class="btn btn-transparent btn-lg border border-black rounded">
+              <i class="bi bi-clock-fill" style="color: blue"></i>
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-container
+          *ngIf="asignacion.fechaFin !== 'En Servicio'  && (isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN'))">
+          <div>Finalizado</div>
+        </ng-container>
+      </td>
+
+      <td *ngIf="isPermitido('OFICIAL') || isPermitido('SUBOFICIAL') || isPermitido('ADMIN')">
+        <div>
+          <button (click)="bajaAsignacion(asignacion.id)"
+                  class="btn btn-transparent btn-lg border border-black rounded"><i class="bi bi-trash3-fill"
+                                                                                    style="color:red"></i></button>
+        </div>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>

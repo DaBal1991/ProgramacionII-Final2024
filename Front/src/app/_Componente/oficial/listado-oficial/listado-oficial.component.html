@@ -1,0 +1,85 @@
+<div class="container">
+
+  <div
+    class="card-header text-center bg-success border border-black text-white rounded mt-4 mb-4"
+    style="font-weight: bold;"><h3>Oficiales</h3>
+  </div>
+
+  <div class="d-flex justify-content-end mb-5">
+
+    <input class="form-control mr-sm-2" type="search"
+           placeholder="Filtrar listado (Criterios: Código, apellido, graduación o usuario)..."
+           [(ngModel)]="criterioBusqueda" name="criterioBusqueda" (keyup)="buscarOficial()">
+
+    <button *ngIf="isPermitido('ADMIN')" type="button"
+            class="btn btn-success btn-lg border border-black rounded mx-2" routerLink="/registrarOficial">Registrar
+      Nuevo Oficial
+    </button>
+
+    <button type="button"
+            class="btn btn-danger btn-lg border border-black rounded" routerLink="/menuPrincipal">Volver
+    </button>
+  </div>
+
+  <table class="table table-striped table-hover align-middle text-center">
+    <thead class="table-success">
+    <tr>
+      <th scope="col">Código</th>
+      <th scope="col">Apellido</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Graduación</th>
+      <th scope="col">Estado</th>
+      <th *ngIf="isPermitido('ADMIN')" scope="col">Usuario</th>
+      <th *ngIf="isPermitido('ADMIN')" scope="col">Contraseña</th>
+      <th *ngIf="isPermitido('ADMIN')" scope="col">Ver Contraseña</th>
+      <th *ngIf="isPermitido('ADMIN')" scope="col">Modificar</th>
+      <th *ngIf="isPermitido('ADMIN')" scope="col">Baja Permanente</th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let oficial of oficialesBuscados">
+      <th scope="row">{{ oficial.id }}</th>
+      <td>{{ oficial.apellido }}</td>
+      <td>{{ oficial.nombrePila }}</td>
+      <td>
+        <img [src]="getImagenGraduacion(oficial.graduacion)" [alt]="oficial.graduacion" [title]="oficial.graduacion">
+      </td>
+      <td>
+        <span *ngIf="oficial.estado">En Servicio</span>
+        <span *ngIf="!oficial.estado">Retirado</span>
+      </td>
+      <td *ngIf="isPermitido('ADMIN')">{{ oficial.nombreUsuario }}</td>
+
+      <td *ngIf="isPermitido('ADMIN')">
+        <span *ngIf="oficial.isPasswordVisible; else passwordOculta">{{ oficial.password }}</span>
+
+        <ng-template #passwordOculta>
+          <span>******</span>
+        </ng-template>
+      </td>
+
+      <td *ngIf="isPermitido('ADMIN')">
+        <button (click)="visibilidadPassword(oficial)" class="btn btn-transparent btn-lg border border-black rounded">
+          <i class="bi"
+             [ngClass]="{'bi-eye': !oficial.isPasswordVisible, 'bi-eye-slash': oficial.isPasswordVisible}"></i>
+        </button>
+      </td>
+
+      <td *ngIf="isPermitido('ADMIN')">
+        <div>
+          <button (click)="editarOficial(oficial.id)" class="btn btn-transparent btn-lg border border-black rounded"><i
+            class="bi bi-pencil-fill" style="color: blue"></i></button>
+        </div>
+      </td>
+
+      <td *ngIf="isPermitido('ADMIN')">
+        <div>
+          <button (click)="bajaOficial(oficial.id)" class="btn btn-transparent btn-lg border border-black rounded"><i
+            class="bi bi-trash3-fill" style="color:red"></i></button>
+        </div>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>

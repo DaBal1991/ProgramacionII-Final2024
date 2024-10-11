@@ -1,0 +1,163 @@
+<div class="container">
+
+  <div
+    class="card-header text-center bg-success border border-black text-white rounded mt-4 mb-4"
+    style="font-weight: bold;"><h3>Modificar Soldado</h3>
+  </div>
+
+  <div class="card bg-success border border-black text-white text-center">
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" #formulario="ngForm">
+
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre completo</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" #nombre="ngModel" required
+                 pattern="[a-zA-ZÑñÁáÉéÍíÓóÚúÜü ]+"
+                 [(ngModel)]="soldado.nombrePila">
+
+          <div *ngIf="nombre.invalid && nombre.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="nombre.errors?.['required']">Es necesario un nombre...</div>
+            <div *ngIf="nombre.errors?.['pattern']">El nombre solo puede contener caracteres alfabeticos...</div>
+          </div>
+
+        </div>
+
+        <!-- Apellido -->
+        <div class="mb-3">
+          <label for="apellido" class="form-label">Apellido</label>
+          <input type="text" class="form-control" id="apellido" name="apellido" #apellido="ngModel" required
+                 pattern="[a-zA-ZÑñÁáÉéÍíÓóÚúÜü ]+"
+                 [(ngModel)]="soldado.apellido">
+
+          <div *ngIf="apellido.invalid && apellido.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="apellido.errors?.['required']">Es necesario un apellido...</div>
+            <div *ngIf="apellido.errors?.['pattern']">El apellido solo puede contener caracteres alfabeticos...</div>
+          </div>
+
+        </div>
+
+        <!-- Nombre Usuario -->
+        <div class="mb-3">
+          <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
+          <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" required="true"
+                 #nomUsuario="ngModel"
+                 [(ngModel)]="soldado.nombreUsuario">
+
+          <div *ngIf="nomUsuario.invalid && nomUsuario.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="nomUsuario.errors?.['required']">Se requiere un nombre de usuario...</div>
+          </div>
+
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="password" name="password" required minlength="6"
+                 #password="ngModel"
+                 [(ngModel)]="soldado.password">
+
+          <div *ngIf="password.invalid && password.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="password.errors?.['required']">Se requiere una contraseña...</div>
+            <div *ngIf="password.errors?.['minlength']">La contraseña debe contener un mínimo de seis caracteres...
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Graduacion -->
+        <div class="mb-3">
+          <label for="graduacion" class="form-label">Graduación</label>
+          <select class="form-control" id="graduacion" name="graduacion" [(ngModel)]="soldado.graduacion"
+                  #graduacion="ngModel" required="true">
+            <option value="" disabled>Elegir graduación</option>
+            <option value="Voluntario de Primera">Voluntario de Primera</option>
+            <option value="Voluntario de Segunda">Voluntario de Segunda</option>
+            <option value="Voluntario de Segunda en Comisión">Voluntario de Segunda en Comisión</option>
+          </select>
+
+          <div *ngIf="graduacion.invalid && graduacion.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="graduacion.errors?.['required']">Se debe seleccionar una graduación...</div>
+          </div>
+
+        </div>
+
+        <!-- Cuartel -->
+        <div class="mb-3">
+          <label for="cuartel" class="form-label">Cuartel</label>
+          <select class="form-control" id="cuartel" name="cuartel" [(ngModel)]="soldado.cuartelAsignado.id"
+                  #cuartel="ngModel" required="true">
+            <option value="0" selected disabled>Seleccione un cuartel...</option>
+            <option *ngFor="let cuartel of cuarteles" [ngValue]="cuartel.id">{{ cuartel.nombreCuartel }}</option>
+          </select>
+
+          <div *ngIf="cuartel.invalid && cuartel.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="graduacion.errors?.['required']">Se debe elegir un cuartel o bien, opción "Sin Asignar"...</div>
+          </div>
+
+        </div>
+
+        <!-- Compañia -->
+        <div class="mb-3">
+          <label for="compania" class="form-label">Compañia</label>
+          <select class="form-control" id="compania" name="compania" [(ngModel)]="soldado.companiaAsignada.id"
+                  #compania="ngModel" required="true">
+            <option value="0" selected disabled>Seleccione una compañia...</option>
+            <option *ngFor="let compania of companias" [ngValue]="compania.id">{{ compania.actividad }}</option>
+          </select>
+
+          <div *ngIf="compania.invalid && compania.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="graduacion.errors?.['required']">Se debe elegir una compañia o bien, opcion "Sin Asignar"...
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Cuerpo -->
+        <div class="mb-3" class="form-label">
+          <label for="cuerpo">Cuerpo</label>
+          <select class="form-control" id="cuerpo" name="cuerpo" [(ngModel)]="soldado.cuerpoAsignado.id"
+                  #cuerpo="ngModel" required="true">
+            <option value="0" selected disabled>Seleccione un cuerpo...</option>
+            <option *ngFor="let cuerpo of cuerpos" [ngValue]="cuerpo.id">{{ cuerpo.nombreCuerpo }}</option>
+          </select>
+
+          <div *ngIf="cuerpo.invalid && cuerpo.touched" class="text-danger mt-2"
+               style="background-color: #F8F9FA; padding: 5px; border-radius: 3px; font-weight: bold">
+            <div *ngIf="graduacion.errors?.['required']">Se debe elegir un cuerpo o bien, opcion "Sin Asignar"...</div>
+          </div>
+
+        </div>
+
+        <!-- Estado -->
+        <div class="mb-3 text-center">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="enServicio" [value]="true"
+                   [(ngModel)]="soldado.estado">
+            <label class="form-check-label" for="enServicio">En servicio</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="estado" id="retirado" [value]="false"
+                   [(ngModel)]="soldado.estado">
+            <label class="form-check-label" for="retirado">Retirado</label>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-success btn-lg me-3 border border-black rounded"
+                  [disabled]="formulario.invalid">Modificar
+          </button>
+          <a href="/listarSoldados" class="btn btn-danger btn-lg border border-black rounded">Volver</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
